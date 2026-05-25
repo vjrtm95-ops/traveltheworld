@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>돌로마이트 8월 세미 패키지 신청</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --stone: #C8BFA8;
+    --rock: #8A7D6B;
+    --cliff: #4A4035;
+    --peak: #2C2419;
+    --sky: #A8BDD4;
+    --glacier: #D6E4F0;
+    --snow: #F5F2EE;
+    --meadow: #7A9E7E;
+    --gold: #C9A84C;
+    --rust: #B5522A;
+    --bg: #1A1612;
+    --bg2: #221E18;
+    --bg3: #2C2720;
+    --text: #F0EBE3;
+    --text-muted: #9A9189;
+    --border: rgba(200,191,168,0.15);
+    --border-hover: rgba(200,191,168,0.35);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-weight: 300;
+  }
+
+  /* Hero */
+  .hero {
+    position: relative;
+    padding: 80px 40px 60px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(168,189,212,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 80% 20%, rgba(201,168,76,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 7vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -1px;
+    color: var(--snow);
+    margin-bottom: 16px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--stone);
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    margin-bottom: 32px;
+  }
+  .hero-badges {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .badge {
+    border: 1px solid var(--border);
+    padding: 6px 16px;
+    font-size: 12px;
+    color: var(--stone);
+    letter-spacing: 1px;
+  }
+
+  /* Layout */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 32px;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 300;
+    color: var(--snow);
+    margin-bottom: 40px;
+  }
+
+  /* Step indicator */
+  .steps {
+    display: flex;
+    gap: 0;
+    margin-bottom: 56px;
+    border: 1px solid var(--border);
+  }
+  .step {
+    flex: 1;
+    padding: 16px 20px;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .step:last-child { border-right: none; }
+  .step.active {
+    background: var(--bg3);
+    color: var(--gold);
+    border-bottom: 2px solid var(--gold);
+  }
+  .step-num {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--stone);
+    margin-bottom: 4px;
+  }
+  .step.active .step-num { color: var(--gold); }
+
+  /* Package Cards */
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2px;
+    margin-bottom: 60px;
+  }
+  .pkg-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 32px 28px;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .pkg-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg3);
+  }
+  .pkg-card.selected {
+    border-color: var(--gold);
+    background: var(--bg3);
+  }
+  .pkg-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 24px;
+    height: 24px;
+    background: var(--gold);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .pkg-badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    margin-bottom: 16px;
+    border: 1px solid;
+  }
+  .pkg-badge.standard { border-color: var(--rock); color: var(--rock); }
+  .pkg-badge.premium { border-color: var(--sky); color: var(--sky); }
+  .pkg-badge.luxury { border-color: var(--gold); color: var(--gold); }
+  .pkg-badge.exclusive { border-color: var(--rust); color: var(--rust); }
+  .pkg-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--snow);
+    margin-bottom: 6px;
+  }
+  .pkg-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .pkg-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .pkg-price span {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  .pkg-per {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+  .pkg-divider {
+    height: 1px;
+    background: var(--border);
+    margin-bottom: 20px;
+  }
+  .pkg-includes {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .pkg-includes li {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .pkg-includes li::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--stone);
+  }
+  .pkg-includes li.highlight {
+    color: var(--stone);
+  }
+
+  /* Course Selection */
+  .courses-section { margin-bottom: 60px; }
+  .course-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+  .course-tab {
+    padding: 12px 24px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    color: var(--text-muted);
+  }
+  .course-tab:hover { color: var(--stone); }
+  .course-tab.active {
+    color: var(--sky);
+    border-bottom-color: var(--sky);
+  }
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .course-card {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .course-card:hover { border-color: var(--border-hover); }
+  .course-card.selected { border-color: var(--sky); }
+  .course-card.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    background: var(--sky);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .course-difficulty {
+    display: inline-flex;
+    gap: 3px;
+    margin-bottom: 12px;
+  }
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+  .dot.filled-easy { background: var(--meadow); }
+  .dot.filled-mid { background: var(--sky); }
+  .dot.filled-hard { background: var(--rust); }
+  .course-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--snow);
+    margin-bottom: 4px;
+  }
+  .course-region {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+  }
+  .course-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .course-meta-item {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .course-meta-item strong {
+    color: var(--stone);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+
+  /* Add-ons */
+  .addons-section { margin-bottom: 60px; }
+  .addons-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 12px;
+  }
+  .addon-card {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .addon-card:hover { border-color: var(--border-hover); }
+  .addon-card.selected { border-color: var(--meadow); }
+  .addon-check {
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--rock);
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    transition: all 0.2s;
+  }
+  .addon-card.selected .addon-check {
+    background: var(--meadow);
+    border-color: var(--meadow);
+    color: var(--bg);
+  }
+  .addon-content {}
+  .addon-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--snow);
+    margin-bottom: 3px;
+  }
+  .addon-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  .addon-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--gold);
+  }
+
+  /* Date Selector */
+  .date-section { margin-bottom: 60px; }
+  .weeks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+  }
+  .week-card {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+  .week-card:hover { border-color: var(--border-hover); }
+  .week-card.selected { border-color: var(--gold); }
+  .week-dates {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--snow);
+    margin-bottom: 4px;
+  }
+  .week-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .week-avail {
+    font-size: 11px;
+    padding: 2px 10px;
+    border: 1px solid;
+    display: inline-block;
+  }
+  .avail-open { border-color: var(--meadow); color: var(--meadow); }
+  .avail-few { border-color: var(--gold); color: var(--gold); }
+  .avail-full { border-color: var(--rock); color: var(--rock); }
+
+  /* Participants */
+  .participants-section { margin-bottom: 60px; }
+  .counter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .counter-info {}
+  .counter-label {
+    font-size: 14px;
+    color: var(--snow);
+    margin-bottom: 3px;
+  }
+  .counter-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .counter-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .counter-btn {
+    width: 32px; height: 32px;
+    border: 1px solid var(--rock);
+    background: none;
+    color: var(--stone);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .counter-btn:hover { border-color: var(--stone); color: var(--snow); }
+  .counter-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--snow);
+    min-width: 32px;
+    text-align: center;
+  }
+
+  /* Summary & CTA */
+  .summary-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    z-index: 100;
+  }
+  .summary-items {
+    display: flex;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .summary-item {}
+  .summary-item-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .summary-item-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--snow);
+  }
+  .summary-total {
+    text-align: right;
+  }
+  .summary-total-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .summary-total-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--gold);
+  }
+  .cta-btn {
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    padding: 14px 36px;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+  }
+  .cta-btn:hover { background: #D4B862; }
+
+  /* Form section */
+  .form-section { margin-bottom: 60px; }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .form-input {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    color: var(--snow);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  .form-input:focus { border-color: var(--stone); }
+  .form-input::placeholder { color: var(--text-muted); }
+  select.form-input option { background: var(--bg2); }
+
+  .special-requests {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 12px 16px;
+    color: var(--snow);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    outline: none;
+    resize: vertical;
+    min-height: 100px;
+    width: 100%;
+    transition: border-color 0.2s;
+  }
+  .special-requests:focus { border-color: var(--stone); }
+
+  /* Notice box */
+  .notice {
+    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.05);
+    padding: 20px 24px;
+    margin-bottom: 32px;
+  }
+  .notice-title {
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+  }
+  .notice-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .notice-list li {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.6;
+  }
+  .notice-list li::before {
+    content: '·';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+
+  @media (max-width: 640px) {
+    .hero { padding: 60px 24px 40px; }
+    .container { padding: 40px 20px; }
+    .summary-bar { padding: 16px 20px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .form-group.full { grid-column: 1; }
+    .steps { overflow-x: auto; }
+    .step { min-width: 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="hero-eyebrow">2025 Summer Expedition</p>
+  <h1>Dolomiti<br><em>Semi Package</em></h1>
+  <p class="hero-sub">August 2nd Week · Italy · South Tyrol</p>
+  <div class="hero-badges">
+    <span class="badge">8월 9일 – 16일</span>
+    <span class="badge">최대 12인 소규모</span>
+    <span class="badge">전문 가이드 동행</span>
+    <span class="badge">숙박 포함</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Step Indicator -->
+  <div class="steps">
+    <div class="step active" onclick="scrollToSection('pkg')">
+      <span class="step-num">01</span>패키지 선택
+    </div>
+    <div class="step" onclick="scrollToSection('course')">
+      <span class="step-num">02</span>코스 선택
+    </div>
+    <div class="step" onclick="scrollToSection('date')">
+      <span class="step-num">03</span>일정 선택
+    </div>
+    <div class="step" onclick="scrollToSection('addon')">
+      <span class="step-num">04</span>옵션 추가
+    </div>
+    <div class="step" onclick="scrollToSection('info')">
+      <span class="step-num">05</span>신청자 정보
+    </div>
+  </div>
+
+  <!-- 01 Package -->
+  <div id="pkg">
+    <p class="section-label">Step 01</p>
+    <h2 class="section-title">패키지 등급 선택</h2>
+  </div>
+
+  <div class="packages-grid">
+
+    <div class="pkg-card" onclick="selectPkg(this, 1190000, '에센셜')">
+      <span class="pkg-badge standard">Standard</span>
+      <p class="pkg-name">에센셜 패키지</p>
+      <p class="pkg-subtitle">Essential · 기본 구성</p>
+      <p class="pkg-price">1,190,000<span>원</span></p>
+      <p class="pkg-per">1인 기준 / 2인 이상 적용</p>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-includes">
+        <li class="highlight">7박 8일 3성급 호텔 숙박</li>
+        <li>공항 ↔ 호텔 셔틀 (편도)</li>
+        <li>가이드 동행 하이킹 3일</li>
+        <li>조식 포함</li>
+        <li>Dolomiti Superski 2일 리프트 패스</li>
+        <li>여행자 보험 기본형</li>
+      </ul>
+    </div>
+
+    <div class="pkg-card" onclick="selectPkg(this, 1890000, '클래식')">
+      <span class="pkg-badge premium">Premium</span>
+      <p class="pkg-name">클래식 패키지</p>
+      <p class="pkg-subtitle">Classic · 가장 인기</p>
+      <p class="pkg-price">1,890,000<span>원</span></p>
+      <p class="pkg-per">1인 기준 / 2인 이상 적용</p>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-includes">
+        <li class="highlight">7박 8일 4성급 호텔 숙박</li>
+        <li>공항 ↔ 호텔 셔틀 (왕복)</li>
+        <li>가이드 동행 하이킹 5일</li>
+        <li>조식 + 석식 포함</li>
+        <li class="highlight">Dolomiti Superski 4일 리프트 패스</li>
+        <li>산악 장비 렌탈 포함</li>
+        <li>여행자 보험 표준형</li>
+        <li>전통 레스토랑 저녁 1회</li>
+      </ul>
+    </div>
+
+    <div class="pkg-card" onclick="selectPkg(this, 2790000, '럭셔리')">
+      <span class="pkg-badge luxury">Luxury</span>
+      <p class="pkg-name">럭셔리 패키지</p>
+      <p class="pkg-subtitle">Luxury · 프리미엄 경험</p>
+      <p class="pkg-price">2,790,000<span>원</span></p>
+      <p class="pkg-per">1인 기준 / 2인 이상 적용</p>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-includes">
+        <li class="highlight">7박 8일 5성급 리조트 숙박</li>
+        <li>전용 차량 공항 픽업·드롭</li>
+        <li class="highlight">전 일정 전문 가이드 전담</li>
+        <li>3식 포함 + 파인다이닝 2회</li>
+        <li class="highlight">Dolomiti Superski 전 일정 무제한</li>
+        <li>프리미엄 장비 풀세트 렌탈</li>
+        <li>여행자 보험 프리미엄형</li>
+        <li>스파 & 웰니스 2회 이용</li>
+        <li>와인 테이스팅 투어</li>
+      </ul>
+    </div>
+
+    <div class="pkg-card" onclick="selectPkg(this, 4200000, '익스클루시브')">
+      <span class="pkg-badge exclusive">Exclusive</span>
+      <p class="pkg-name">익스클루시브 패키지</p>
+      <p class="pkg-subtitle">Exclusive · 완전 맞춤형</p>
+      <p class="pkg-price">4,200,000<span>원</span></p>
+      <p class="pkg-per">1인 기준 / 프라이빗 그룹</p>
+      <div class="pkg-divider"></div>
+      <ul class="pkg-includes">
+        <li class="highlight">7박 8일 5성급 부티크 호텔</li>
+        <li>프라이빗 전세 차량 전 일정</li>
+        <li class="highlight">1:1 전용 마운틴 가이드</li>
+        <li>모든 식사 포함 + 미슐랭 1회</li>
+        <li class="highlight">헬리콥터 투어 1회 포함</li>
+        <li>Via Ferrata 전문 코스 포함</li>
+        <li>여행자 보험 최고급형</li>
+        <li>개인 포토그래퍼 동행 (반일)</li>
+        <li>현지 와이너리 프라이빗 방문</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- 02 Course -->
+  <div id="course" class="courses-section">
+    <p class="section-label">Step 02</p>
+    <h2 class="section-title">하이킹 코스 선택</h2>
+
+    <div class="course-tabs">
+      <button class="course-tab active" onclick="filterCourse(this, 'all')">전체 코스</button>
+      <button class="course-tab" onclick="filterCourse(this, 'easy')">입문 · 쉬움</button>
+      <button class="course-tab" onclick="filterCourse(this, 'mid')">중급 · 보통</button>
+      <button class="course-tab" onclick="filterCourse(this, 'hard')">고급 · 어려움</button>
+      <button class="course-tab" onclick="filterCourse(this, 'via')">Via Ferrata</button>
+    </div>
+
+    <div class="courses-grid">
+
+      <div class="course-card" data-level="easy" onclick="selectCourse(this, '라가주오이 파노라마')">
+        <div class="course-difficulty">
+          <div class="dot filled-easy"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <p class="course-name">라가주오이 파노라마</p>
+        <p class="course-region">Lagazuoi · Passo Falzarego</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>8km</span>
+          <span class="course-meta-item"><strong>고도</strong>+350m</span>
+          <span class="course-meta-item"><strong>소요</strong>4시간</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-level="easy" onclick="selectCourse(this, '알페 디 시우시')">
+        <div class="course-difficulty">
+          <div class="dot filled-easy"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <p class="course-name">알페 디 시우시</p>
+        <p class="course-region">Alpe di Siusi · Castelrotto</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>10km</span>
+          <span class="course-meta-item"><strong>고도</strong>+280m</span>
+          <span class="course-meta-item"><strong>소요</strong>4.5시간</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-level="mid" onclick="selectCourse(this, '트레 치메 디 라바레도')">
+        <div class="course-difficulty">
+          <div class="dot filled-mid"></div><div class="dot filled-mid"></div><div class="dot"></div>
+        </div>
+        <p class="course-name">트레 치메 디 라바레도</p>
+        <p class="course-region">Tre Cime · Auronzo di Cadore</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>10km</span>
+          <span class="course-meta-item"><strong>고도</strong>+570m</span>
+          <span class="course-meta-item"><strong>소요</strong>5시간</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-level="mid" onclick="selectCourse(this, '세체다 능선')">
+        <div class="course-difficulty">
+          <div class="dot filled-mid"></div><div class="dot filled-mid"></div><div class="dot"></div>
+        </div>
+        <p class="course-name">세체다 능선 트레일</p>
+        <p class="course-region">Seceda · Val Gardena</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>14km</span>
+          <span class="course-meta-item"><strong>고도</strong>+720m</span>
+          <span class="course-meta-item"><strong>소요</strong>6시간</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-level="mid" onclick="selectCourse(this, '팔레 디 산 마르티노')">
+        <div class="course-difficulty">
+          <div class="dot filled-mid"></div><div class="dot filled-mid"></div><div class="dot"></div>
+        </div>
+        <p class="course-name">팔레 디 산 마르티노</p>
+        <p class="course-region">Pale di San Martino</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>16km</span>
+          <span class="course-meta-item"><strong>고도</strong>+850m</span>
+          <span class="course-meta-item"><strong>소요</strong>7시간</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-level="hard" onclick="selectCourse(this, '마르몰라다 빙하')">
+        <div class="course-difficulty">
+          <div class="dot filled-hard"></div><div class="dot filled-hard"></div><div class="dot filled-hard"></div>
+        </div>
+        <p class="course-name">마르몰라다 빙하 루트</p>
+        <p class="course-region">Marmolada · Punta Rocca 3265m</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>12km</span>
+          <span class="course-meta-item"><strong>고도</strong>+1,400m</span>
+          <span class="course-meta-item"><strong>소요</strong>9시간</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-level="hard" onclick="selectCourse(this, '치베타 노스페이스')">
+        <div class="course-difficulty">
+          <div class="dot filled-hard"></div><div class="dot filled-hard"></div><div class="dot filled-hard"></div>
+        </div>
+        <p class="course-name">치베타 노스페이스</p>
+        <p class="course-region">Civetta · Alleghe</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>18km</span>
+          <span class="course-meta-item"><strong>고도</strong>+1,650m</span>
+          <span class="course-meta-item"><strong>소요</strong>10시간</span>
+        </div>
+      </div>
+
+      <div class="course-card" data-level="via" onclick="selectCourse(this, '비아 페라타 부셀로니')">
+        <div class="course-difficulty">
+          <div class="dot filled-hard"></div><div class="dot filled-hard"></div><div class="dot filled-hard"></div>
+        </div>
+        <p class="course-name">Via Ferrata 부셀로니</p>
+        <p class="course-region">Busselloni · Cortina d'Ampezzo</p>
+        <div class="course-meta">
+          <span class="course-meta-item"><strong>거리</strong>6km</span>
+          <span class="course-meta-item"><strong>고도</strong>+900m</span>
+          <span class="course-meta-item"><strong>소요</strong>8시간</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 03 Date -->
+  <div id="date" class="date-section">
+    <p class="section-label">Step 03</p>
+    <h2 class="section-title">출발 일정 선택</h2>
+    <div class="weeks-grid">
+      <div class="week-card" onclick="selectWeek(this, '8/9–16')">
+        <p class="week-dates">8월 9일 – 16일</p>
+        <p class="week-label">토요일 출발 · 8박</p>
+        <span class="week-avail avail-open">잔여 8석</span>
+      </div>
+      <div class="week-card" onclick="selectWeek(this, '8/10–17')">
+        <p class="week-dates">8월 10일 – 17일</p>
+        <p class="week-label">일요일 출발 · 8박</p>
+        <span class="week-avail avail-few">잔여 3석</span>
+      </div>
+      <div class="week-card" onclick="selectWeek(this, '8/11–18')">
+        <p class="week-dates">8월 11일 – 18일</p>
+        <p class="week-label">월요일 출발 · 8박</p>
+        <span class="week-avail avail-open">잔여 6석</span>
+      </div>
+      <div class="week-card" onclick="selectWeek(this, '8/12–19')">
+        <p class="week-dates">8월 12일 – 19일</p>
+        <p class="week-label">화요일 출발 · 8박</p>
+        <span class="week-avail avail-full">마감</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 Add-ons -->
+  <div id="addon" class="addons-section">
+    <p class="section-label">Step 04</p>
+    <h2 class="section-title">추가 옵션 선택</h2>
+    <div class="addons-grid">
+
+      <div class="addon-card" onclick="toggleAddon(this, 180000, '헬리콥터 투어')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">헬리콥터 투어</p>
+          <p class="addon-desc">돌로마이트 상공 30분 비행. 트레 치메 · 마르몰라다 조망</p>
+          <p class="addon-price">+180,000원</p>
+        </div>
+      </div>
+
+      <div class="addon-card" onclick="toggleAddon(this, 95000, '산악 자전거 하프데이')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">산악 자전거 하프데이</p>
+          <p class="addon-desc">E-MTB 포함, 가이드 동행 4시간 코스</p>
+          <p class="addon-price">+95,000원</p>
+        </div>
+      </div>
+
+      <div class="addon-card" onclick="toggleAddon(this, 120000, '암벽 클라이밍 체험')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">암벽 클라이밍 체험</p>
+          <p class="addon-desc">장비 포함, 입문 레벨 · 3시간 강습</p>
+          <p class="addon-price">+120,000원</p>
+        </div>
+      </div>
+
+      <div class="addon-card" onclick="toggleAddon(this, 65000, '현지 요리 클래스')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">티롤 전통 요리 클래스</p>
+          <p class="addon-desc">현지 셰프와 함께하는 3시간 쿠킹 클래스</p>
+          <p class="addon-price">+65,000원</p>
+        </div>
+      </div>
+
+      <div class="addon-card" onclick="toggleAddon(this, 85000, '포토그래퍼 동행')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">전문 포토그래퍼 동행</p>
+          <p class="addon-desc">하이킹 1일 동행, 편집 사진 30장 제공</p>
+          <p class="addon-price">+85,000원</p>
+        </div>
+      </div>
+
+      <div class="addon-card" onclick="toggleAddon(this, 55000, '공항 왕복 픽업')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">공항 왕복 전용 픽업</p>
+          <p class="addon-desc">베네치아 마르코폴로 공항 ↔ 코르티나</p>
+          <p class="addon-price">+55,000원</p>
+        </div>
+      </div>
+
+      <div class="addon-card" onclick="toggleAddon(this, 45000, '여행 보험 업그레이드')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">여행 보험 업그레이드</p>
+          <p class="addon-desc">산악 활동 전액 보상 + 응급 헬기 후송 포함</p>
+          <p class="addon-price">+45,000원</p>
+        </div>
+      </div>
+
+      <div class="addon-card" onclick="toggleAddon(this, 110000, '스파 & 테르메')">
+        <div class="addon-check">✓</div>
+        <div class="addon-content">
+          <p class="addon-name">알파인 스파 & 테르메</p>
+          <p class="addon-desc">코르티나 4성급 스파 3시간 이용권</p>
+          <p class="addon-price">+110,000원</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Participants -->
+  <div class="participants-section">
+    <p class="section-label">인원 선택</p>
+    <div class="counter-row">
+      <div class="counter-info">
+        <p class="counter-label">성인</p>
+        <p class="counter-desc">만 18세 이상</p>
+      </div>
+      <div class="counter-controls">
+        <button class="counter-btn" onclick="changeCount('adult', -1)">−</button>
+        <span class="counter-val" id="adult-count">2</span>
+        <button class="counter-btn" onclick="changeCount('adult', 1)">+</button>
+      </div>
+    </div>
+    <div class="counter-row">
+      <div class="counter-info">
+        <p class="counter-label">청소년</p>
+        <p class="counter-desc">만 13–17세 · 20% 할인 적용</p>
+      </div>
+      <div class="counter-controls">
+        <button class="counter-btn" onclick="changeCount('teen', -1)">−</button>
+        <span class="counter-val" id="teen-count">0</span>
+        <button class="counter-btn" onclick="changeCount('teen', 1)">+</button>
+      </div>
+    </div>
+    <div class="counter-row">
+      <div class="counter-info">
+        <p class="counter-label">아동</p>
+        <p class="counter-desc">만 12세 이하 · 40% 할인 적용</p>
+      </div>
+      <div class="counter-controls">
+        <button class="counter-btn" onclick="changeCount('child', -1)">−</button>
+        <span class="counter-val" id="child-count">0</span>
+        <button class="counter-btn" onclick="changeCount('child', 1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 Info -->
+  <div id="info" class="form-section">
+    <p class="section-label">Step 05</p>
+    <h2 class="section-title">신청자 정보 입력</h2>
+
+    <div class="notice">
+      <p class="notice-title">안내 사항</p>
+      <ul class="notice-list">
+        <li>신청 후 48시간 이내 담당자가 연락드립니다</li>
+        <li>예약금 (총금액의 30%)은 신청 확인 후 7일 이내 납부 요망</li>
+        <li>출발 30일 이전 취소 시 전액 환불, 14일 이내 취소 시 50% 환불</li>
+        <li>여권 사본은 출발 2주 전까지 이메일 제출 필요</li>
+        <li>해당 패키지는 세미 패키지로 항공권은 별도입니다</li>
+      </ul>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">성명 (한글)</label>
+        <input type="text" class="form-input" placeholder="홍길동">
+      </div>
+      <div class="form-group">
+        <label class="form-label">성명 (영문 · 여권 기재)</label>
+        <input type="text" class="form-input" placeholder="HONG GIL DONG">
+      </div>
+      <div class="form-group">
+        <label class="form-label">연락처</label>
+        <input type="tel" class="form-input" placeholder="010-0000-0000">
+      </div>
+      <div class="form-group">
+        <label class="form-label">이메일</label>
+        <input type="email" class="form-input" placeholder="email@example.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">생년월일</label>
+        <input type="text" class="form-input" placeholder="YYYY-MM-DD">
+      </div>
+      <div class="form-group">
+        <label class="form-label">하이킹 경험</label>
+        <select class="form-input">
+          <option value="">선택해주세요</option>
+          <option>입문 (1년 미만)</option>
+          <option>초급 (1–2년)</option>
+          <option>중급 (3–5년)</option>
+          <option>상급 (5년 이상)</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">특이 사항 / 요청 사항</label>
+        <textarea class="special-requests" placeholder="알레르기, 건강 상태, 특별 요청 등을 자유롭게 적어주세요"></textarea>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Summary Bar -->
+<div class="summary-bar">
+  <div class="summary-items">
+    <div class="summary-item">
+      <p class="summary-item-label">패키지</p>
+      <p class="summary-item-val" id="sum-pkg">–</p>
+    </div>
+    <div class="summary-item">
+      <p class="summary-item-label">코스</p>
+      <p class="summary-item-val" id="sum-course">–</p>
+    </div>
+    <div class="summary-item">
+      <p class="summary-item-label">인원</p>
+      <p class="summary-item-val" id="sum-pax">2명</p>
+    </div>
+    <div class="summary-item">
+      <p class="summary-item-label">일정</p>
+      <p class="summary-item-val" id="sum-date">–</p>
+    </div>
+  </div>
+  <div style="display:flex; align-items:center; gap:24px; flex-wrap:wrap;">
+    <div class="summary-total">
+      <p class="summary-total-label">총 예상 금액</p>
+      <p class="summary-total-price" id="total-price">–</p>
+    </div>
+    <button class="cta-btn" onclick="submitForm()">신청하기</button>
+  </div>
+</div>
+
+<script>
+  let state = {
+    pkg: null,
+    pkgPrice: 0,
+    pkgName: '',
+    course: null,
+    date: null,
+    addons: [],
+    addonTotal: 0,
+    adult: 2,
+    teen: 0,
+    child: 0,
+  };
+
+  function selectPkg(el, price, name) {
+    document.querySelectorAll('.pkg-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    state.pkgPrice = price;
+    state.pkgName = name;
+    updateSummary();
+  }
+
+  function selectCourse(el, name) {
+    document.querySelectorAll('.course-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    state.course = name;
+    updateSummary();
+  }
+
+  function selectWeek(el, label) {
+    if (el.querySelector('.week-avail').classList.contains('avail-full')) return;
+    document.querySelectorAll('.week-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    state.date = label;
+    updateSummary();
+  }
+
+  function toggleAddon(el, price, name) {
+    el.classList.toggle('selected');
+    if (el.classList.contains('selected')) {
+      state.addons.push({ name, price });
+      state.addonTotal += price;
+    } else {
+      state.addons = state.addons.filter(a => a.name !== name);
+      state.addonTotal -= price;
+    }
+    updateSummary();
+  }
+
+  function changeCount(type, delta) {
+    state[type] = Math.max(0, state[type] + delta);
+    if (state.adult < 1 && type === 'adult') state.adult = 1;
+    document.getElementById(type + '-count').textContent = state[type];
+    updateSummary();
+  }
+
+  function updateSummary() {
+    const pax = state.adult + state.teen + state.child;
+    document.getElementById('sum-pkg').textContent = state.pkgName || '–';
+    document.getElementById('sum-course').textContent = state.course ? state.course.substring(0, 8) + (state.course.length > 8 ? '…' : '') : '–';
+    document.getElementById('sum-date').textContent = state.date || '–';
+    document.getElementById('sum-pax').textContent = pax + '명';
+
+    if (state.pkgPrice > 0) {
+      const adultTotal = state.pkgPrice * state.adult;
+      const teenTotal = Math.round(state.pkgPrice * 0.8) * state.teen;
+      const childTotal = Math.round(state.pkgPrice * 0.6) * state.child;
+      const total = adultTotal + teenTotal + childTotal + state.addonTotal * pax;
+      document.getElementById('total-price').textContent = total.toLocaleString('ko-KR') + '원';
+    } else {
+      document.getElementById('total-price').textContent = '–';
+    }
+  }
+
+  function filterCourse(btn, level) {
+    document.querySelectorAll('.course-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.course-card').forEach(card => {
+      if (level === 'all') {
+        card.style.display = '';
+      } else {
+        card.style.display = card.dataset.level === level ? '' : 'none';
+      }
+    });
+  }
+
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function submitForm() {
+    if (!state.pkgName) { alert('패키지를 선택해주세요.'); return; }
+    if (!state.course) { alert('코스를 선택해주세요.'); return; }
+    if (!state.date) { alert('일정을 선택해주세요.'); return; }
+    alert('신청이 접수되었습니다!\n담당자가 48시간 내 연락드리겠습니다.');
+  }
+</script>
+</body>
+</html>
